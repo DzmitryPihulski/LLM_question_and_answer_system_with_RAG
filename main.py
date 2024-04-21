@@ -13,7 +13,7 @@ class QASystem:
         Keyword Arguments:
             llm_model_name {str} -- the model for generating responses, I used tiny Llama from HuggingFace (default: {"TinyLlama/TinyLlama-1.1B-Chat-v1.0"})
             embedding_model_name {str} -- the model for generating embeddings, I used popular all-MiniLM-L6-v2 from HuggingFace (default: {"sentence-transformers/all-MiniLM-L6-v2"})
-            max_tokens {int} -- control maximum amount of information llm returns (default: {500})
+            max_tokens {int} -- to control the maximum amount of information llm returns (default: {500})
         """
         self.model = AutoModelForCausalLM.from_pretrained(llm_model_name)
         self.tokenizer = AutoTokenizer.from_pretrained(llm_model_name)
@@ -41,7 +41,7 @@ class QASystem:
         return HuggingFacePipeline(pipeline=self.pipeline)
 
     def answer(self, user_query, number_of_articles=1):
-        """answer function generate response from llm with RAG option
+        """answer function generate the response from llm with RAG option
 
         Arguments:
             user_query {str} -- user question.

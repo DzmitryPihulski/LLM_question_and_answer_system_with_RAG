@@ -1,5 +1,5 @@
-# Description
-This project is a Question-Answering program based on [TinyLlama/TinyLlama-1.1B-Chat-v1.0](https://huggingface.co/TinyLlama/TinyLlama-1.1B-Chat-v1.0) llm from HuggingFace. The project also involves RAG system based on [1300+ Towards DataScience Medium Articles Dataset](https://www.kaggle.com/datasets/meruvulikith/1300-towards-datascience-medium-articles-dataset) data set from kaggle.
+# Project overview
+This is a Question-Answering program based on [TinyLlama/TinyLlama-1.1B-Chat-v1.0](https://huggingface.co/TinyLlama/TinyLlama-1.1B-Chat-v1.0) llm from [HuggingFace](https://huggingface.co/). The project also involves RAG system based on [1300+ Towards DataScience Medium Articles Dataset](https://www.kaggle.com/datasets/meruvulikith/1300-towards-datascience-medium-articles-dataset) data set from kaggle.
 
 Retrieve Augmented Generation in my program works as follows:
 
