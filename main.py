@@ -18,23 +18,23 @@ class QASystem:
         self.model = AutoModelForCausalLM.from_pretrained(llm_model_name)
         self.tokenizer = AutoTokenizer.from_pretrained(llm_model_name)
         self.database = make_FAISS_db(embedding_model_name)
+        print("Creating model pipeline, it may take few minutes...")
         self.max_new_tokens = max_new_tokens
         self.llm = self.get_base_llm()
         self.prompt = prompt_template()
         self.llm_chain = LLMChain(llm=self.llm, prompt=self.prompt)
 
     def get_base_llm(self):
-        """get_base_llm generates pipeline of the future text generation. Here I used repetition_penalty = 1.2, other parameters are basic.
+        """get_base_llm generates pipeline of the future text generation. Here I used repetition_penalty = 1.1, other parameters are basic.
 
         Returns:
             HuggingFacePipeline -- ready pipeline for text generation
         """
-        print("Creating model pipeline...")
         self.pipeline =  pipeline(
             model=self.model,
             tokenizer=self.tokenizer,
             task="text-generation",
-            repetition_penalty=1.2,
+            repetition_penalty=1.1,
             return_full_text=True,
             max_new_tokens=self.max_new_tokens
         )
@@ -53,7 +53,7 @@ class QASystem:
         print("LLM answers...")
         retriever = self.database.as_retriever(
             search_type="similarity",
-            search_kwargs={'k': 1}
+            search_kwargs={'k': number_of_articles}
         )
         rag_chain = (
                 {"context": retriever, "question": RunnablePassthrough()}
@@ -72,7 +72,10 @@ if __name__ == '__main__':
     # test the system
     test_model = QASystem(llm_model_name=llm_model_name, embedding_model_name=embedding_model_name, max_new_tokens=max_new_tokens)
     test_query = "What is linear regression?"
-    answer = test_model.answer(user_query=test_query, number_of_articles=number_of_articles_for_context)
-    print('Question:\n', answer['question'])
-    print('Context:\n', answer['context'][0].to_json()['kwargs']['metadata']['Text'][:200] + '...')
-    print('\n', answer['text'].split('[/INST]')[1].strip())
+    answer_with_RAG = test_model.answer(user_query=test_query, number_of_articles=number_of_articles_for_context)
+    print('Question:\n', answer_with_RAG['question'])
+    print('Context:\n', answer_with_RAG['context'][0].to_json()['kwargs']['metadata']['Text'][:200] + '...')
+    print('Answer with RAG:\n', answer_with_RAG['text'].split('[/INST]')[1].strip())
+    #without RAG
+    anwer_without_RAG = test_model.get_base_llm().invoke(test_query)
+    print('Answer without RAG:\n', anwer_without_RAG)
