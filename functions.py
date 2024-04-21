@@ -15,7 +15,7 @@ def make_FAISS_db(embedding_model_name):
         FAISS -- the database
     """
     embedding_model = HuggingFaceEmbeddings(model_name=embedding_model_name)
-    df = pd.read_csv('medium.csv')
+    df = pd.read_csv('articles.csv')
     articles = DataFrameLoader(df, page_content_column = "Title")
     documents = articles.load()
     splitter = TokenTextSplitter(
