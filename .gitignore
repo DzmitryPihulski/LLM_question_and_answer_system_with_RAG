@@ -1,3 +1,7 @@
 /.venv
 .gitignore
 Report.docx
+develpment.ipynb
+main_development.py
+funcitons_development.py
+.env
