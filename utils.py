@@ -17,7 +17,7 @@ def make_FAISS_db(embedding_model_name):
     """
     embedding_model = HuggingFaceEmbeddings(model_name=embedding_model_name)
     df = pd.read_csv("articles.csv")
-    articles = DataFrameLoader(df, page_content_column="Title")
+    articles = DataFrameLoader(df, page_content_column="Text")
     documents = articles.load()
     splitter = TokenTextSplitter(chunk_size=500, chunk_overlap=50)
     splitted_texts = splitter.split_documents(documents)
@@ -35,13 +35,16 @@ def prompt_template():
     """
     prompt_template = """
         [INST]
-        Answer the question based on the context below. If the
-        question cannot be answered using the information provided answer
-        with "I don't know".
+        Answer the question based on the context below. 
+        If you do not know the answer, or are unsure, say you don't know..
 
-        Context: {context}
+        Context:
+        {% for doc in context %}
+            {{ doc.page_content }}
+        {% endfor %}
+        [/INST]
 
-        Question: {question}
-
+        Question:
+        {{question}}
         [/INST]"""
-    return PromptTemplate(input_variables=["context", "question"], template=prompt_template)
+    return PromptTemplate(input_variables=["context", "question"], template=prompt_template, template_format="jinja2")

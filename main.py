@@ -1,4 +1,4 @@
-from funcitons_development import make_FAISS_db, prompt_template
+from utils import make_FAISS_db, prompt_template
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 from langchain_community.llms import HuggingFacePipeline
 from langchain.schema.runnable import RunnablePassthrough
@@ -115,7 +115,6 @@ if __name__ == "__main__":
         embedding_model_name=embedding_model_name,
         max_new_tokens=max_new_tokens,
     )
-    test_query = "What is linear regression?"
     answer_with_RAG = test_model.answer(
         user_query=test_query, number_of_articles=number_of_articles_for_context
     )
