@@ -47,4 +47,6 @@ def prompt_template():
         Question:
         {{question}}
         [/INST]"""
-    return PromptTemplate(input_variables=["context", "question"], template=prompt_template, template_format="jinja2")
+    return PromptTemplate(
+        input_variables=["context", "question"], template=prompt_template, template_format="jinja2"
+    )
